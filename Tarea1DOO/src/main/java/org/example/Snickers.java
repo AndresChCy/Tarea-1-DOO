@@ -1,4 +1,4 @@
 package org.example;
 
-class Snickers extends Dulce {
+class Snickers extends Dulces {
 }
