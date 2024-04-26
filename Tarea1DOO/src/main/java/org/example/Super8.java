@@ -1,5 +1,6 @@
 package org.example;
 
+
 /**
  * Subclase de Dulce que representa un Super8.
  */
@@ -20,4 +21,4 @@ class Super8 extends Dulce {
     public String consumirlo(){
         return "Super 8";
     }
-}
+
