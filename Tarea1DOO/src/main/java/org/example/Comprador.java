@@ -2,26 +2,26 @@ package org.example;
 
 class Comprador {
     private String sonido;
-    private int vuelto  ;
-    public Comprador(Moneda m, int cualBebida, Expendedor exp){
+    private int vuelto;
+    private Producto producto;
+
+    public Comprador(Moneda m, Precio CualProducto, Expendedor exp) throws PagoIncorrectoException, PagoInsuficienteException, NoHayProductoException {
         vuelto = 0;
         sonido = null;
-        Moneda m2;
-        Bebida b= exp.comprarBebida(m,cualBebida);
-        if (b != null) sonido = b.beber() ;
-        while(true){
-            m2 = exp.getVuelto();
-            if(m2 == null){
-                break;
-            }
-            if (m2 != null ){
-                vuelto = vuelto + m2.getValor();
-            }
+
+        try {
+            producto = exp.comprarProducto(m, CualProducto);
+            sonido = producto.consumirlo();
+            //AQUÍ SE DEBE IMPLEMENTAR CODIGO PARA OBTENER EL VUELTO (vaciar monedero).
+        } catch (PagoIncorrectoException | PagoInsuficienteException | NoHayProductoException e) {
+            throw e;
         }
     }
+
     public int cuantoVuelto(){
         return vuelto;
     }
+
     public String queBebiste(){
         return sonido;
     }
