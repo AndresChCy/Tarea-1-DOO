@@ -13,8 +13,7 @@ class Expendedor {
     private Deposito<Producto> snickers;
     private Deposito<Producto> super8;
     private Deposito<Moneda> monedero;
-    public static final int  COCA=1;
-    public static final int  SPRITE=2;
+
     /*Metodo constructor que rellena sus depositos para productos de forma magica*/
     public Expendedor(int a, int precioBebidas){
         monedero = new Deposito<>();
@@ -28,7 +27,7 @@ class Expendedor {
             Producto b = new CocaCola(100+i);
             Producto b2 = new Sprite(200+i);
             Producto b3 = new Fanta(300+i);
-            Producto b4 = new Snickers(400+i);
+            Producto b4 = new Snicker(400+i);
             Producto b5 = new Super8(500+i);
             coca.addObject(b);
             sprite.addObject(b2);
@@ -43,45 +42,52 @@ class Expendedor {
     Si pagas menos te devolvera la moneda que usaste
     Sino pagas entonces no ocurrira nada.
      */
-    public Bebida comprarBebida(Moneda m, int a){
+    public Producto comprarProducto(Moneda m, Precio cualProducto){
+        Producto p ;
+        Moneda m100 ;
         if(m != null) {
-            Moneda m100;
-            Bebida b;
-            if (precio <= m.getValor()) {
-                if (a == Expendedor.COCA) {
-                    b = coca.getObject();
-                } else if (a == Expendedor.SPRITE) {
-                    b = sprite.getObject();
-                } else {
-                    for (int i = 0; i < m.getValor(); i = i + 100) {
-                        m100 = new Moneda100();
-                        monedero.addObject(m100);
-                    }
-                    return null;
+            if(cualProducto != null){
+                if(cualProducto.getPrecio() < m.getValor()){
+                    //Exception pago insuficiente
+                    //meter en el monedero la moneda con que se pago
                 }
-                if (b != null) {
-                    for (int i = 0; i < m.getValor()-precio; i = i + 100) {
-                        m100 = new Moneda100();
-                        monedero.addObject(m100);
+                else{
+                    switch (cualProducto){
+                        case COCACOLA :
+                            p = coca.getObject();
+                            break;
+                        case SPRITE:
+                            p = sprite.getObject();
+                            break;
+                        case FANTA :
+                            p = fanta.getObject();
+                            break;
+                        case SNICKERS:
+                            p = snickers.getObject();
+                            break;
+                        case SUPER8:
+                            p = super8.getObject();
+                            break;
+                        default:
+                            //Excepcion no hay producto
+                            break;
+
                     }
-                    return b;
-                }
-                else {
-                    for (int i = 0; i < m.getValor(); i = i + 100) {
-                        m100 = new Moneda100();
-                        monedero.addObject(m100);
+                    if (p!=null){
+                        //sacar el vuelto aqui y meterla en monedero
+                        //m = null
                     }
-                    return null;
+                    else{
+                        //Excepcion no quedan productos de ese tipo.
+                    }
                 }
             }
-            else {
-                for (int i = 0; i < m.getValor(); i = i + 100) {
-                    m100 = new Moneda100();
-                    monedero.addObject(m100);
-                }
-            }
+            else{ /*excepcion aca (no se escogio un product que exista) (no hay proucto*/}
         }
-        return null;
+        else {
+            //Aca una excepcion por no entregar moneda
+        }
+
     }
     /*Metodo para devolver el vuelto guardado*/
     public Moneda getVuelto(){
