@@ -21,12 +21,12 @@ abstract class Moneda implements Comparable<Integer>{
      */
     public abstract int getValor();
     /**
-     * Método para comparar el valor de la moneda con un precio dado.
-     * @param valor El precio a comparar.
-     * @return Un valor negativo si el valor de la moneda es menor que el precio,
+     * Compara esta moneda con un valor.
+     *
+     * @param valor El valor a comparar con la moneda.
+     * @return La diferencia entre el valor de la moneda y el valor dado como parámetro.
+     *         Un valor negativo si el valor de la moneda es menor que el parámetro,
      *         cero si son iguales, o un valor positivo si el valor de la moneda es mayor.
      */
-    public int compareTo(int valor) {
-        return Integer.compare(this.getValor(), valor);
-    }
+    public abstract int compareTo(Integer valor);
 }
