@@ -5,7 +5,7 @@ class Comprador {
     private int vuelto;
     private Producto producto;
 
-    public Comprador(Moneda m, Precio CualProducto, Expendedor exp) throws PagoIncorrectoException, PagoInsuficienteException, NoHayProductoException {
+    public Comprador(Moneda m, CaracteristicasProducto CualProducto, Expendedor exp) throws PagoIncorrectoException, PagoInsuficienteException, NoHayProductoException {
         vuelto = 0;
         sonido = null;
 

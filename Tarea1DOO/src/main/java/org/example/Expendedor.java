@@ -29,13 +29,17 @@ class Expendedor {
         }
     }
 
-    /*Metodo para comprar productos
-    Te devolvera el producto en caso de que pagues lo que corresponde
-    Si pagas de mas creara magicamente monedas de 100 que despues te dara de vuelto
-    Si pagas menos te devolvera la moneda que usaste
-    Sino pagas entonces no ocurrira nada.
+    /**
+     * Realiza la compra de un producto utilizando una moneda dada y especificaciones del producto.
+     *
+     * @param m               La moneda utilizada para la compra.
+     * @param cualProducto    Las características del producto que se desea comprar.
+     * @return El producto comprado, si la transacción es exitosa.
+     * @throws PagoIncorrectoException    Si la moneda pasada como parámetro es nula.
+     * @throws NoHayProductoException     Si las características del producto son nulas o el producto deseado no está disponible.
+     * @throws PagoInsuficienteException  Si la moneda pasada como parámetro no tiene un valor suficiente para comprar el producto.
      */
-    public Producto comprarProducto(Moneda m, Precio cualProducto) throws PagoIncorrectoException,NoHayProductoException,PagoInsuficienteException{
+    public Producto comprarProducto(Moneda m, CaracteristicasProducto cualProducto) throws PagoIncorrectoException,NoHayProductoException,PagoInsuficienteException{
 
         //Excepcion moneda es null
         if (m==null) {
@@ -44,42 +48,53 @@ class Expendedor {
 
         //Excepcion cualProducto es null.
         if ( cualProducto==null ) {
+            monedero.addObject(m);
             throw new NoHayProductoException();
         }
 
         Producto p;
-        Moneda m100;
 
-        if (cualProducto.getPrecio() < m.getValor()) {
-            //AQUÍ SE DEBE IMPLEMENTAR LLENAR EL MONEDERO, IGUAL AL VALOR DE LA MONEDA.
-            //PARA DESPUÉS OBTENER EL VUELTO.
+        // Comprobar si el precio del producto es mayor que el valor de la moneda
+        if (m.compareTo(cualProducto.getPrecio()) < 0) {
+            //En caso que la moneda no alcance para comprar el producto, se le devuelve la misma
+            monedero.addObject(m);
+            // Lanzar excepción si el valor de la moneda es insuficiente
             throw new PagoInsuficienteException();
+
         } else {
-            switch (cualProducto) {
-                case COCACOLA:
-                    p = coca.getObject();
-                    break;
-                case SPRITE:
+            // Obtener el índice del producto
+            int indiceProducto = cualProducto.getIndex();
+
+            // Obtener el producto correspondiente según el índice
+            switch (indiceProducto) {
+                case 1:
                     p = sprite.getObject();
                     break;
-                case FANTA:
+                case 2:
+                    p = coca.getObject();
+                    break;
+                case 3:
                     p = fanta.getObject();
                     break;
-                case SNICKERS:
-                    p = snickers.getObject();
-                    break;
-                case SUPER8:
+                case 4:
                     p = super8.getObject();
                     break;
+                case 5:
+                    p = snickers.getObject();
+                    break;
                 default:
+                    monedero.addObject(m);
                     throw new NoHayProductoException();
 
             }
 
+            // Si se encuentra el producto en el depósito, agregar monedas de 100 hasta alcanzar el vuelto correspondiente
             if (p!=null) {
-                //AQUÍ SE DEBE IMPLEMENTAR LLENAR EL MONEDERO, IGUAL
-                //A LA RESTA DEL VALOR DE LA MONEDA CON EL PRECIO DEL PRODUCTO.
+                for (int i = 0; i < m.compareTo(cualProducto.getPrecio()); i += 100) {
+                    monedero.addObject(new Moneda100());
+                }
             } else {
+                monedero.addObject(m);
                 throw new NoHayProductoException();
             }
         }
