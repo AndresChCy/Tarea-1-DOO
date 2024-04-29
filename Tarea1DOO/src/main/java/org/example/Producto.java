@@ -1,9 +1,10 @@
 package org.example;
 
 /**
- * Super-Superclase que conforma a todos los productos dentro del programa.
+ * Super-Superclase que conforma a todos los productos del programa.
  */
 abstract class Producto {
+    /** Int para almacenar el número de serie del producto */
     private int serie;
 
     /**
@@ -14,10 +15,7 @@ abstract class Producto {
         serie = NumSerie;
     }
 
-    /**
-     * Método abstracto que tendrá uso por las extensiones(sub-subclases) para representarse.
-     *
-     */
+    /** Método abstracto que tendrá uso por las extensiones(sub-subclases) para representarse. */
     public abstract String consumirlo();
 
     /**

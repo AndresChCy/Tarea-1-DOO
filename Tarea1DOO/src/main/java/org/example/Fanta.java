@@ -4,7 +4,6 @@ package org.example;
  * Subclase de Bebida que representa una Fanta.
  */
 class Fanta extends Bebida {
-
     /**
      * Método constructor de Fanta que permite asignarle un número de serie.
      * @param numSerie Número que representa la serie del producto.

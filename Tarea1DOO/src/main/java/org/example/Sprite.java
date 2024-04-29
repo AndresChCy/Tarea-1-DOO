@@ -4,13 +4,12 @@ package org.example;
  * Subclase de Bebida que representa una Sprite.
  */
 class Sprite extends Bebida {
-
     /**
      * Método constructor de Sprite que permite asignarle un número de serie.
-     * @param numSerie Número que representa la serie del producto.
+     * @param NumSerie Número que representa la serie del producto.
      */
-    public Sprite(int numSerie) {
-        super(numSerie);
+    public Sprite(int NumSerie) {
+        super(NumSerie);
     }
 
     /**

@@ -4,10 +4,7 @@ package org.example;
  * Excepcion especifica, es arrojada cuando se identifica que no hay más productos en el deposito.
  */
 public class PagoInsuficienteException extends Exception {
-
-    /**
-     * Constructor que hereda los datos de la clase Exception.
-     */
+    /** Constructor que hereda los datos de la clase Exception. */
     public PagoInsuficienteException(){
         super();
     }
