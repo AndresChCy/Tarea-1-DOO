@@ -5,7 +5,7 @@ package org.example;
  */
 public class PagoIncorrectoException extends Exception {
     /** Constructor que hereda los datos de la clase Exception. */
-    public PagoIncorrectoException(){
-        super();
+    public PagoIncorrectoException(String mensajeError){
+        super(mensajeError);
     }
 }

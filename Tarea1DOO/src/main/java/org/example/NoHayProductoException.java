@@ -5,7 +5,7 @@ package org.example;
  */
 public class NoHayProductoException extends Exception {
     /** Constructor que hereda los datos de la clase Exception. */
-    public NoHayProductoException(){
-        super();
+    public NoHayProductoException(String mensajeError){
+        super(mensajeError);
     }
 }
