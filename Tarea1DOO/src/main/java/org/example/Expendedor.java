@@ -33,21 +33,21 @@ class Expendedor {
      * Realiza la compra de un producto utilizando una moneda dada y especificaciones del producto.
      *
      * @param m               La moneda utilizada para la compra.
-     * @param cualProducto    Las características del producto que se desea comprar.
+     * @param cualProducto    El indice del producto que se desea comprar +1 para que sea mas intuitivo
      * @return El producto comprado, si la transacción es exitosa.
      * @throws PagoIncorrectoException    Si la moneda pasada como parámetro es nula.
      * @throws NoHayProductoException     Si las características del producto son nulas o el producto deseado no está disponible.
      * @throws PagoInsuficienteException  Si la moneda pasada como parámetro no tiene un valor suficiente para comprar el producto.
      */
-    public Producto comprarProducto(Moneda m, CaracteristicasProducto cualProducto) throws PagoIncorrectoException,NoHayProductoException,PagoInsuficienteException{
+    public Producto comprarProducto(Moneda m, int cualProducto) throws PagoIncorrectoException,NoHayProductoException,PagoInsuficienteException{
 
         //Excepcion moneda es null
         if (m==null) {
             throw new PagoIncorrectoException();
         }
 
-        //Excepcion cualProducto es null.
-        if ( cualProducto==null ) {
+        //Excepcion cualProducto no existe.
+        if ( cualProducto <= 0 || 5 < cualProducto ) {
             monedero.addObject(m);
             throw new NoHayProductoException();
         }
@@ -55,19 +55,17 @@ class Expendedor {
         Producto p;
 
         // Comprobar si el precio del producto es mayor que el valor de la moneda
-        if (m.compareTo(cualProducto.getPrecio()) < 0) {
+        if (m.compareTo(CaracteristicasProducto.values()[cualProducto-1].getPrecio()) < 0) {
             //En caso que la moneda no alcance para comprar el producto, se le devuelve la misma
             monedero.addObject(m);
             // Lanzar excepción si el valor de la moneda es insuficiente
             throw new PagoInsuficienteException();
 
         } else {
-            // Obtener el índice del producto
-            int indiceProducto = cualProducto.getIndex();
 
             // Obtener el producto correspondiente según el índice
-            switch (indiceProducto) {
-                case 1:
+            switch (cualProducto) {
+                case 1 :
                     p = sprite.getObject();
                     break;
                 case 2:
@@ -90,17 +88,19 @@ class Expendedor {
 
             // Si se encuentra el producto en el depósito, agregar monedas de 100 hasta alcanzar el vuelto correspondiente
             if (p!=null) {
-                for (int i = 0; i < m.compareTo(cualProducto.getPrecio()); i += 100) {
+                for (int i = 0; i < m.compareTo(CaracteristicasProducto.values()[cualProducto-1].getPrecio()); i += 100) {
                     monedero.addObject(new Moneda100());
                 }
-            } else {
+                m = null;
+            }
+            else {
                 monedero.addObject(m);
                 throw new NoHayProductoException();
             }
+            return p;
         }
-        return null;
-    }
 
+    }
 
     public Moneda getVuelto(){
         return monedero.getObject();
