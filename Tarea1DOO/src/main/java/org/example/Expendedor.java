@@ -1,10 +1,11 @@
 package org.example;
 import javax.swing.plaf.ProgressBarUI;
 
-/*Un expendedor al que le puedes comprar productos usando monedas*/
+/**
+ * Un expendedor al que le puedes comprar productos usando monedas.
+ */
 class Expendedor {
-
-    /*Creamos un deposito para cada elemento necesario para el expendedor*/
+    /** Creamos un deposito para cada elemento necesario para el expendedor */
     private Deposito<Producto> coca;
     private Deposito<Producto> sprite;
     private Deposito<Producto> fanta;
@@ -12,7 +13,7 @@ class Expendedor {
     private Deposito<Producto> super8;
     private Deposito<Moneda> monedero;
 
-    /*Metodo constructor que rellena sus depositos para productos de forma magica*/
+    /** Metodo constructor que rellena sus depositos para productos de forma magica */
     public Expendedor(int NumProductos){
         monedero = new Deposito<>();
         coca = new Deposito<>();
@@ -31,7 +32,6 @@ class Expendedor {
 
     /**
      * Realiza la compra de un producto utilizando una moneda dada y especificaciones del producto.
-     *
      * @param m               La moneda utilizada para la compra.
      * @param cualProducto    El indice del producto que se desea comprar +1 para que sea mas intuitivo
      * @return El producto comprado, si la transacción es exitosa.
@@ -40,30 +40,25 @@ class Expendedor {
      * @throws PagoInsuficienteException  Si la moneda pasada como parámetro no tiene un valor suficiente para comprar el producto.
      */
     public Producto comprarProducto(Moneda m, int cualProducto) throws PagoIncorrectoException,NoHayProductoException,PagoInsuficienteException{
-
-        //Excepcion moneda es null
         if (m==null) {
-            throw new PagoIncorrectoException();
+            throw new PagoIncorrectoException("Pago Insuficiente.");
         }
 
-        //Excepcion cualProducto no existe.
         if ( cualProducto <= 0 || 5 < cualProducto ) {
             monedero.addObject(m);
-            throw new NoHayProductoException();
+            throw new NoHayProductoException("No tenemos este producto.");
         }
 
         Producto p;
 
-        // Comprobar si el precio del producto es mayor que el valor de la moneda
+        /** Caso especifico donde la moneda tiene un valor menor al precio establecido del producto.
+         *  En cuya situación se le devuelve la misma moneda al comprador.
+         *  Caso contrario, el programa trabaja con una serie de casos para darle al usuario
+         *  el producto pedido. */
         if (m.compareTo(CaracteristicasProducto.values()[cualProducto-1].getPrecio()) < 0) {
-            //En caso que la moneda no alcance para comprar el producto, se le devuelve la misma
             monedero.addObject(m);
-            // Lanzar excepción si el valor de la moneda es insuficiente
-            throw new PagoInsuficienteException();
-
+            throw new PagoInsuficienteException("Pago Insuficiente.");
         } else {
-
-            // Obtener el producto correspondiente según el índice
             switch (cualProducto) {
                 case 1 :
                     p = sprite.getObject();
@@ -82,11 +77,12 @@ class Expendedor {
                     break;
                 default:
                     monedero.addObject(m);
-                    throw new NoHayProductoException();
-
+                    throw new NoHayProductoException("No tenemos este producto.");
             }
 
-            // Si se encuentra el producto en el depósito, agregar monedas de 100 hasta alcanzar el vuelto correspondiente
+            /** En caso de que queden productos los cuales entregarle al comprador, el programa llena el monedero con monedas de 100.
+             *  Caso contrario, se lanza una excepción explicando la situación.
+             */
             if (p!=null) {
                 for (int i = 0; i < m.compareTo(CaracteristicasProducto.values()[cualProducto-1].getPrecio()); i += 100) {
                     monedero.addObject(new Moneda100());
@@ -95,13 +91,13 @@ class Expendedor {
             }
             else {
                 monedero.addObject(m);
-                throw new NoHayProductoException();
+                throw new NoHayProductoException("Lo sentimos, no hay stock de este producto en este momento.");
             }
             return p;
         }
-
     }
 
+    /** Método get que sirve para retirar el dinero dentro del monedero. */
     public Moneda getVuelto(){
         return monedero.getObject();
     }
