@@ -4,10 +4,10 @@ package org.example;
  * Enumeración que representa diferentes productos con sus características asociadas.
  */
 public enum CaracteristicasProducto {
-    SPRITE(500 ),
-    COCACOLA(500),
+    SPRITE(400),
+    COCACOLA(450),
     FANTA(500),
-    SUPER8(1000),
+    SUPER8(800),
     SNICKERS(1000);
     /**
      * Precio asociado al producto.
